@@ -1,5 +1,7 @@
 package com.example.springboot;
 
+import com.google.gson.JsonArray;
+import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +17,8 @@ import java.util.zip.ZipInputStream;
 @Component
 public class Statistics {
     final static String DOWNLOAD_LINK = "https://docs.google.com/uc?export=download&id=188s0_sYkvJNgHYUXLsZpUb7CZgG_tGq6";
-    final static String TRAIN_PATH = "D:/WSB/Network/Application/train";
+//    final static String TRAIN_PATH = "D:/WSB/Network/Application/train";
+    final static String TRAIN_PATH = "D:/Workspace/FreelanceProjects/train";
     final static String EXTRACT_PATH = "D:/WSB/Network/Application/";
 
     private int epoch = 0;
@@ -99,8 +102,8 @@ public class Statistics {
         }
     }
 
-    public JSONObject handWrittenNumbersRecognition() throws IOException {
-		JSONObject jsonObject = new JSONObject();
+    public JSONArray handWrittenNumbersRecognition() throws IOException {
+        JSONArray jsonArray = new JSONArray();
         UnaryOperator<Double> sigmoid = x -> 1 / (1 + Math.exp(-x));
         UnaryOperator<Double> dsigmoid = y -> y * (1 - y);
         NeuralNetwork nn = new NeuralNetwork( 0.001, sigmoid, dsigmoid, 784, 512, 128, 32, 10);
@@ -160,12 +163,11 @@ public class Statistics {
             }
             System.out.println("Epoch " + i + "; correct(pc): " + correct +"; correctSum: "+correctSum+"; errorSum: " + errorSum);
             Statistics statistics = new Statistics(i, correct, errorSum);
-			jsonObject.put("StatsObject"+i, statistics);
+            jsonArray.add(statistics);
         }
 
         DrawingForm f = new DrawingForm(nn);
         new Thread(f).start();
-        System.out.println(jsonObject.toString());
-        return jsonObject;
+        return jsonArray;
     }
 }

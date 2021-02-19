@@ -40,15 +40,16 @@
                         // data.addRow(["", 20, 75]);
                         // data.addRow(["", 22, 70]);
                         // data.addRow(["", 21, 73]);
-
+                        //
                         for (let i=0; i<jsonData.length; i++){
                             data.addRow(
                                 [
                                     " ",
-                                    jsonData.,
-                                    0
+                                    jsonData[i].correct,
+                                    jsonData[i].errors
                                 ]
                             );
+                            console.log(jsonData[i].correct);
                         }
                         // jsonData.forEach(function (row) {
                         //     data.addRow([
