@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Statistics</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+</head>
+<body>
+    <div id="curve_chart" style="width: 1000px; height: 500px; margin: 6% auto auto"></div>
+    <script>
+        $( document ).ready(function() {
+            google.charts.load('current', {'packages':['corechart']});
+            google.charts.setOnLoadCallback(drawChart);
+
+            function drawChart() {
+                $.ajax({
+                    method: "post",
+                    url: "/getStatisticInfo",
+                    dataType: "json",
+                    success: function (jsonData) {
+                        console.log(jsonData);
+                        var data = new google.visualization.DataTable();
+                        data.addColumn('string', 'Epoch');
+                        data.addColumn('number', 'Correct');
+                        data.addColumn('number', 'Error');
+
+                        // jsonData.add(["Epoch"," "],["Correct", 1],["Error",5]);
+                        // console.log(jsonData);
+
+                        // data.addRow(["", 6, 120]);
+                        // data.addRow(["", 8, 100]);
+                        // data.addRow(["", 8, 100]);
+                        // data.addRow(["", 18, 80]);
+                        // data.addRow(["", 17, 81]);
+                        // data.addRow(["", 20, 75]);
+                        // data.addRow(["", 22, 70]);
+                        // data.addRow(["", 21, 73]);
+
+                        for (let i=0; i<jsonData.length; i++){
+                            data.addRow(
+                                [
+                                    " ",
+                                    jsonData.,
+                                    0
+                                ]
+                            );
+                        }
+                        // jsonData.forEach(function (row) {
+                        //     data.addRow([
+                        //         "",
+                        //         row.Correct,
+                        //         row.Error
+                        //     ]);
+                        // });
+
+                        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+                        let options = {
+                            title: 'Learning rate',
+                            curveType: 'function',
+                            legend: { position: 'bottom' }
+                        };
+
+                        chart.draw(data, options);
+
+                    },
+                    error: function () {
+                        alert("Error");
+                    }
+                })
+            }
+        });
+    </script>
+</body>
+</html>
